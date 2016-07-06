@@ -5,14 +5,57 @@
  * Provide helper function for having OG context part of menu access callbacks.
  */
 
+/**
+ * Implements hook_og_context_negotiation_info().
+ */
+function og_context_access_callback_og_context_negotiation_info() {
+  $providers = array();
 
+  $providers['og_context_access_callback'] = array(
+    'name' => t('OG context in access callback'),
+    'description' => t('Allow OG context to be used inside menu item access callbacks. Make sure the have it enabled as the first handler'),
+    'callback' => 'og_context_access_callback_handler',
+  );
+
+  return $providers;
+}
+
+
+/**
+ * Statically cache paths that will need to be reset.
+ *
+ * @param string $path
+ *   The URL path.
+ */
 function og_context_access_callback_register_path($path) {
   $cache = &drupal_static(__FUNCTION__, array());
 
   $cache[] = $path;
 }
 
+/**
+ * Return the statically cached registered paths.
+ *
+ * @return array
+ */
 function og_context_access_callback_get_registered_paths() {
   return drupal_static('og_context_access_callback_register_path', array());
 }
 
+
+/**
+ * Og Context handler; Reset registered menu items.
+ */
+function og_context_access_callback_handler() {
+  if (!$paths = og_context_access_callback_get_registered_paths()) {
+    // No paths registered.
+    return;
+  }
+
+  // Unset the paths from the menu_get_item() cache.
+  $cache = &drupal_static('menu_get_item');
+
+  foreach ($paths as $path) {
+    unset($cache[$path]);
+  }
+}
