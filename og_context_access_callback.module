@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Provide helper function for having OG context part of menu access callbacks.
+ */
+
+
+function og_context_access_callback_register_path($path) {
+  $cache = &drupal_static(__FUNCTION__, array());
+
+  $cache[] = $path;
+}
+
+function og_context_access_callback_get_registered_paths() {
+  return drupal_static('og_context_access_callback_register_path', array());
+}
+

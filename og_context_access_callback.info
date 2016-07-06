@@ -1,0 +1,5 @@
+name = OG context access callback
+description = "Provide helper function for having OG context part of menu access callbacks."
+package = "Organic groups"
+dependencies[] = og_context
+core = 7.x
