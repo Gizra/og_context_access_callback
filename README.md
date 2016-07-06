@@ -10,6 +10,12 @@ access callback.
 In different scenarios, such has having [OG Purl](https://drupal.org/project/og_purl) module enabled
 using OG context in the access callback will not work.
 
+## Usage
+
+* Enable the module
+* Under `admin/config/group/context` enable the `OG context in access callback` OG context handler and make sure it's 
+the first handler in the list. 
+
 ## Technical Overview
 
 Lets assume OG purl is indeed enabled. Upon it's `hook_init()` OG context is trying to be determined.
